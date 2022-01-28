@@ -14,16 +14,12 @@ kernel_stack:
 section .text
 align 4
 
-extern sum_of_three
+extern main
 
   dd MAGIC_NUMBER
   dd FLAGS
   dd CHECKSUM
 
 loader:
-  push dword 30
-  push dword 20
-  push dword 10
-  call sum_of_three ; result goes in eax
-loop:
-  jmp loop
+  call main
+  hlt
