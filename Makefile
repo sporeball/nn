@@ -1,20 +1,26 @@
 .SILENT:
 
 # full list of .o files we expect to exist by step 2
-OBJECTS = loader.o
+OBJECTS = loader.o kmain.o
 
+CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector	\
+		 -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
 ASFLAGS = -f elf
 LDFLAGS = -T link.ld -melf_i386
 
-# step 1: assemble all .s files into .o files
+# step 1: assemble all .c files into .o files
+%.o: %.c
+	gcc $(CFLAGS)	$< -o $@
+
+# step 2: assemble all .s files into .o files
 %.o: %.s
 	nasm $(ASFLAGS) $< -o $@
 
-# step 2: combine all .o files into a single .elf file
+# step 3: combine all .o files into a single .elf file
 kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
 
-# step 3: create an ISO
+# step 4: create an ISO
 nn.iso: kernel.elf
 	mv kernel.elf iso/boot
 	genisoimage -R								\
