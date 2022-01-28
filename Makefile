@@ -1,5 +1,7 @@
 .SILENT:
 
+.DEFAULT_GOAL = nn.iso
+
 # full list of .o files we expect to exist by step 2
 OBJECTS = loader.o kmain.o
 
