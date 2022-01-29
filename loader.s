@@ -14,7 +14,6 @@ kernel_stack:
 section .text
 align 4
 
-extern main
 ; these are made available to C:
 global load_idt
 global kb_handle_asm
