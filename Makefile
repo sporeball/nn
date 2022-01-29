@@ -7,8 +7,9 @@
 OBJECTS = loader.o kmain.o
 
 # here be flags
-CFLAGS    = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-              -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CFLAGS    = -c -m32 -ffreestanding -fno-builtin -fno-stack-protector   \
+              -nodefaultlibs -nostartfiles -nostdlib                   \
+              -Wall -Wextra -Werror
 ASFLAGS   = -f elf
 LDFLAGS   = -T link.ld -melf_i386
 ISOFLAGS  = -R -b boot/grub/stage2_eltorito -no-emul-boot              \
@@ -16,7 +17,7 @@ ISOFLAGS  = -R -b boot/grub/stage2_eltorito -no-emul-boot              \
               -boot-info-table -o nn.iso iso
 QEMUFLAGS = -accel tcg,thread=single -cpu n270 -m 128 -no-reboot       \
               -drive format=raw,media=cdrom,file=nn.iso
-BCHSFLAGS = -f .bochsrc -q
+BCHSFLAGS = -q
 
 # step 1: assemble all .c files into .o files
 %.o: %.c
