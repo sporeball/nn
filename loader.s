@@ -15,7 +15,7 @@ section .text
 align 4
 
 ; these are made available to C:
-global load_idt
+global load_idt_asm
 global kb_handle_asm
 ; these are made available to us by C:
 extern main
@@ -36,7 +36,7 @@ loader:
 kb_handle_asm:
   call kb_handle
   iretd
-load_idt:
+load_idt_asm:
   mov edx, [esp + 4]
   lidt [edx]         ; load IDT into idtr
   sti                ; start interrupts

@@ -4,12 +4,12 @@
 .RECIPEPREFIX = ~
 
 # full list of .o files we expect to exist by step 2
-OBJECTS = loader.o src/main.o
+OBJECTS = loader.o src/main.o src/interrupt.o src/io.o
 
 # here be flags
 CFLAGS    = -c -m32 -ffreestanding -fno-builtin -fno-stack-protector   \
               -nodefaultlibs -nostartfiles -nostdlib                   \
-              -Wall -Wextra -Werror
+              -Wall -Wextra -Werror -O2
 ASFLAGS   = -f elf
 LDFLAGS   = -T link.ld -melf_i386
 ISOFLAGS  = -R -b boot/grub/stage2_eltorito -no-emul-boot              \
