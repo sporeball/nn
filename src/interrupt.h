@@ -9,6 +9,9 @@ struct idt_entry {
   unsigned short int offset_upper;
 };
 
+void init_int_kb();
 void init_pic();
+void load_idt();
+void kb_handle();
 
 #endif

@@ -1,5 +1,6 @@
 #include "io.h"
 
+// these are defined in io.h instead of here:
 extern unsigned char inb(unsigned short port);
 extern void outb(unsigned short int port, unsigned char val);
 

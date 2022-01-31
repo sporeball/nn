@@ -4,7 +4,7 @@
 .RECIPEPREFIX = ~
 
 # full list of .o files we expect to exist by step 2
-OBJECTS = loader.o src/main.o src/interrupt.o src/io.o
+OBJECTS = loader.o src/main.o src/keyboard.o src/interrupt.o src/io.o
 
 # here be flags
 CFLAGS    = -c -m32 -ffreestanding -fno-builtin -fno-stack-protector   \

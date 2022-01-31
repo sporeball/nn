@@ -35,7 +35,7 @@ loader:
 
 kb_handle_asm:
   call kb_handle
-  iretd
+  iret
 load_idt_asm:
   mov edx, [esp + 4]
   lidt [edx]         ; load IDT into idtr
