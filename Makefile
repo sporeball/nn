@@ -12,11 +12,9 @@ CFLAGS    = -c -m32 -ffreestanding -fno-builtin -fno-stack-protector   \
               -Wall -Wextra -Werror -O2
 ASFLAGS   = -f elf
 LDFLAGS   = -T link.ld -melf_i386
-ISOFLAGS  = -R -b boot/grub/stage2_eltorito -no-emul-boot              \
-              -boot-load-size 4 -A nn -input-charset utf8 -quiet       \
-              -boot-info-table -o nn.iso iso
+ISOFLAGS  = -o nn.iso iso
 QEMUFLAGS = -accel tcg,thread=single -cpu n270 -m 128 -no-reboot       \
-              -drive format=raw,media=cdrom,file=nn.iso
+              -cdrom nn.iso
 BCHSFLAGS = -q
 
 # step 1: assemble all .c files into .o files
@@ -28,13 +26,13 @@ BCHSFLAGS = -q
 ~ nasm $(ASFLAGS) $< -o $@
 
 # step 3: combine all .o files into a single .elf file
-kernel.elf: $(OBJECTS)
-~ ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
+kernel.bin: $(OBJECTS)
+~ ld $(LDFLAGS) $(OBJECTS) -o kernel.bin
 
 # step 4: create an ISO
-nn.iso: kernel.elf
-~ mv kernel.elf iso/boot
-~ genisoimage $(ISOFLAGS)
+nn.iso: kernel.bin
+~ mv kernel.bin iso/boot
+~ grub-mkrescue $(ISOFLAGS)
 
 # boot nn (in qemu)
 run: nn.iso
@@ -46,4 +44,4 @@ debug: nn.iso
 
 clean:
 ~ find . -name "*.o" -type f -delete
-~ rm -f *.log iso/boot/kernel.elf nn.iso
+~ rm -f *.log iso/boot/kernel.bin nn.iso

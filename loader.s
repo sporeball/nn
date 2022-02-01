@@ -11,6 +11,34 @@ align 4
 kernel_stack:
   resb KERNEL_STACK_SIZE ; reserve
 
+section .data
+align 4
+
+; black magic for GDT
+; thanks citrons!
+gdt:
+  gdt_null:
+    dq 0x00
+  gdt_code:
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x9A
+    db 0b11001111
+    db 0x00
+  gdt_data:
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x92
+    db 0b11001111
+    db 0x00
+  gdt_end:
+
+  gdt_desc:
+    dw gdt_end - gdt - 1
+    dd gdt
+
 section .text
 align 4
 
@@ -26,10 +54,18 @@ extern kb_handle
   dd CHECKSUM
 
 loader:
-  call main
-  hlt
   cli
-  mov esp, kernel_stack + KERNEL_STACK_SIZE
+  mov esp, kernel_stack + KERNEL_STACK_SIZE ; point esp to start of stack
+  lgdt [gdt_desc]                           ; load GDT into gdtr
+  mov ax, 0x10                              ; extra post-GDT black magic...
+  mov ds, ax
+  mov ss, ax
+  mov es, ax
+  mov fs, ax
+  mov gs, ax
+  jmp 0x08:continue                         ; move on
+
+continue:
   call main
   hlt
 
@@ -41,3 +77,8 @@ load_idt_asm:
   lidt [edx]         ; load IDT into idtr
   sti                ; start interrupts
   ret
+
+; finish out the sector
+times 510-($-$$) db 0
+db 0x55
+db 0xAA

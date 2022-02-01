@@ -3,7 +3,7 @@
 **nn** is a toy operating system, designed for fun (and from a position of general naïveté). i'm not sure how far it'll go, but one thing's for sure: it'll probably implement **n**early **n**othing.
 
 ### building
-ensure [gcc](https://gcc.gnu.org), [nasm](https://www.nasm.us), [binutils](https://www.gnu.org/software/binutils), and [genisoimage(1)](https://linux.die.net/man/1/genisoimage) are installed, then run `make`.
+ensure [gcc](https://gcc.gnu.org), [nasm](https://www.nasm.us), [binutils](https://www.gnu.org/software/binutils), [GRUB](https://www.gnu.org/software/grub), and [xorriso](https://www.gnu.org/software/xorriso) are installed, then run `make`.
 
 if all goes well, an `nn.iso` file should be produced.
 
