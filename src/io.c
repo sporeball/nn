@@ -9,8 +9,8 @@ unsigned int cursor = 4;
 
 /**
  * write a character to the screen (framebuffer)
- * @param i  location in the framebuffer
- * @param c  the character
+ * @param i location in the framebuffer
+ * @param c the character
  * @param bg
  * @param fg
  */

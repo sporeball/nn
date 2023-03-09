@@ -62,6 +62,7 @@ enum keys {
 };
 
 void init_keymap();
+void init_shiftKeymap();
 void kb_handle();
 
 #endif

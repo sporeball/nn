@@ -20,6 +20,7 @@ int main() {
   outb(0x21, 0xFD);
 
   init_keymap();
+  init_shiftKeymap();
 
   while (1);
 }

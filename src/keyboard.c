@@ -2,6 +2,10 @@
 #include "keyboard.h"
 
 static char keymap[256];
+static char shiftKeymap[256];
+
+int shift = 0;
+int rshift = 0;
 
 void init_keymap() {
   for (int i = 0; i < 256; i++) {
@@ -60,23 +64,97 @@ void init_keymap() {
   keymap[KEY_SPACE] = ' ';
 }
 
+void init_shiftKeymap() {
+  for (int i = 0; i < 256; i++) {
+    shiftKeymap[i] = '\0';
+  }
+  shiftKeymap[KEY_1] = '!';
+  shiftKeymap[KEY_2] = '@';
+  shiftKeymap[KEY_3] = '#';
+  shiftKeymap[KEY_4] = '$';
+  shiftKeymap[KEY_5] = '%';
+  shiftKeymap[KEY_6] = '^';
+  shiftKeymap[KEY_7] = '&';
+  shiftKeymap[KEY_8] = '*';
+  shiftKeymap[KEY_9] = '(';
+  shiftKeymap[KEY_0] = ')';
+  shiftKeymap[KEY_DASH] = '_';
+  shiftKeymap[KEY_EQUALS] = '+';
+
+  shiftKeymap[KEY_Q] = 'Q';
+  shiftKeymap[KEY_W] = 'W';
+  shiftKeymap[KEY_E] = 'E';
+  shiftKeymap[KEY_R] = 'R';
+  shiftKeymap[KEY_T] = 'T';
+  shiftKeymap[KEY_Y] = 'Y';
+  shiftKeymap[KEY_U] = 'U';
+  shiftKeymap[KEY_I] = 'I';
+  shiftKeymap[KEY_O] = 'O';
+  shiftKeymap[KEY_P] = 'P';
+  shiftKeymap[KEY_LSB] = '{';
+  shiftKeymap[KEY_RSB] = '}';
+  shiftKeymap[KEY_BACKSLASH] = '|';
+
+  shiftKeymap[KEY_A] = 'A';
+  shiftKeymap[KEY_S] = 'S';
+  shiftKeymap[KEY_D] = 'D';
+  shiftKeymap[KEY_F] = 'F';
+  shiftKeymap[KEY_G] = 'G';
+  shiftKeymap[KEY_H] = 'H';
+  shiftKeymap[KEY_J] = 'J';
+  shiftKeymap[KEY_K] = 'K';
+  shiftKeymap[KEY_L] = 'L';
+  shiftKeymap[KEY_SEMICOLON] = ':';
+  shiftKeymap[KEY_APOSTROPHE] = '"';
+  shiftKeymap[KEY_BACKTICK] = '~';
+
+  shiftKeymap[KEY_Z] = 'Z';
+  shiftKeymap[KEY_X] = 'X';
+  shiftKeymap[KEY_C] = 'C';
+  shiftKeymap[KEY_V] = 'V';
+  shiftKeymap[KEY_B] = 'B';
+  shiftKeymap[KEY_N] = 'N';
+  shiftKeymap[KEY_M] = 'M';
+  shiftKeymap[KEY_COMMA] = '<';
+  shiftKeymap[KEY_PERIOD] = '>';
+  shiftKeymap[KEY_SLASH] = '?';
+}
+
 // handle keyboard interrupt
 void kb_handle() {
   outb(0x20, 0x20);
   unsigned char status = inb(0x64);
   // if the lowest bit is set, a key was just pressed
-  if (status & 0x01) {
-    unsigned int scan = inb(0x60);
-    // backspace
-    if (scan == 0xE) {
-      if (cursor > 0) {
-        cursor -= 2;
-        fb_write_cell(cursor, ' ', 0, 0);
-      }
+  if (!(status & 0x01)) {
+    return;
+  }
+  unsigned int scan = inb(0x60);
+  // backspace
+  if (scan == KEY_BACKSPACE) {
+    if (cursor > 0) {
+      cursor -= 2;
+      fb_write_cell(cursor, ' ', 0, 0);
     }
-    else if (keymap[scan] != '\0') {
+  }
+  else if (scan == 0x2A) {
+    shift = 1;
+  }
+  else if (scan == 0xAA) {
+    shift = 0;
+  }
+  else if (scan == 0x36) {
+    rshift = 1;
+  }
+  else if (scan == 0xB6) {
+    rshift = 0;
+  }
+  else if (keymap[scan] != '\0') {
+    if (shift | rshift) {
+      fb_write_cell(cursor, shiftKeymap[scan], 0, 15);
+    }
+    else {
       fb_write_cell(cursor, keymap[scan], 0, 15);
-      cursor += 2;
     }
+    cursor += 2;
   }
 }
