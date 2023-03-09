@@ -1,5 +1,6 @@
 #include "interrupt.h"
 #include "io.h"
+#include "keyboard.h"
 
 int main() {
   // empty the entire framebuffer
@@ -17,6 +18,8 @@ int main() {
 
   // enable IRQ1 (keyboard)
   outb(0x21, 0xFD);
+
+  init_keymap();
 
   while (1);
 }
