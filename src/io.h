@@ -5,6 +5,7 @@ extern char *framebuffer;
 extern unsigned int cursor;
 
 void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg);
+void fb_scroll();
 
 // todo: figure out how to move these to the asm side
 inline unsigned char inb(unsigned short port) {

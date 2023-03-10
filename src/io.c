@@ -18,3 +18,22 @@ void fb_write_cell(unsigned int i, char c, unsigned char bg, unsigned char fg) {
   framebuffer[i] = c;
   framebuffer[i + 1] = ((bg & 0x0F) << 4 | (fg & 0x0F));
 }
+
+/**
+ * scroll the framebuffer by one row
+ */
+void fb_scroll() {
+  // clear the first row
+  for (int i = 0; i < 160; i += 2) {
+    fb_write_cell(i, ' ', 0, 0);
+  }
+  // scroll the existing rows up by 1
+  for (int i = 0; i < 3840; i += 2) {
+    framebuffer[i] = framebuffer[i + 160];
+    framebuffer[i + 1] = framebuffer[i + 161];
+  }
+  // clear the last row
+  for (int i = 3840; i < 4000; i += 2) {
+    fb_write_cell(i, ' ', 0, 0);
+  }
+}

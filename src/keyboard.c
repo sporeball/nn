@@ -120,6 +120,15 @@ void init_shiftKeymap() {
   shiftKeymap[KEY_SLASH] = '?';
 }
 
+void kb_enter() {
+  cursor -= (cursor % 160);
+  if (cursor == 3840) {
+    fb_scroll();
+  } else {
+    cursor += 160;
+  }
+}
+
 // handle keyboard interrupt
 void kb_handle() {
   outb(0x20, 0x20);
@@ -136,15 +145,22 @@ void kb_handle() {
       fb_write_cell(cursor, ' ', 0, 0);
     }
   }
+  if (scan == KEY_ENTER) {
+    kb_enter();
+  }
+  // left shift pressed
   else if (scan == 0x2A) {
     shift = 1;
   }
+  // left shift released
   else if (scan == 0xAA) {
     shift = 0;
   }
+  // right shift pressed
   else if (scan == 0x36) {
     rshift = 1;
   }
+  // right shift released
   else if (scan == 0xB6) {
     rshift = 0;
   }
@@ -155,6 +171,11 @@ void kb_handle() {
     else {
       fb_write_cell(cursor, keymap[scan], 0, 15);
     }
-    cursor += 2;
+    // scroll the screen if about to go off the edge of the screen
+    if (cursor == 3998) {
+      kb_enter();
+    } else {
+      cursor += 2;
+    }
   }
 }
