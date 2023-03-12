@@ -8,8 +8,7 @@ int main() {
     fb_write_cell(i, ' ', 0, 0);
   }
   // hi!
-  fb_write_cell(0, 'n', 0, 13);
-  fb_write_cell(2, 'n', 0, 13);
+  print("nn\r\n");
 
   // initialization
   init_int_kb();

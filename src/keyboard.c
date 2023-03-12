@@ -166,16 +166,14 @@ void kb_handle() {
   }
   else if (keymap[scan] != '\0') {
     if (shift | rshift) {
-      fb_write_cell(cursor, shiftKeymap[scan], 0, 15);
+      putchar(shiftKeymap[scan]);
     }
     else {
-      fb_write_cell(cursor, keymap[scan], 0, 15);
+      putchar(keymap[scan]);
     }
     // scroll the screen if about to go off the edge of the screen
     if (cursor == 3998) {
       kb_enter();
-    } else {
-      cursor += 2;
     }
   }
 }

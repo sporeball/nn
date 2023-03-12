@@ -5,7 +5,7 @@ extern unsigned char inb(unsigned short port);
 extern void outb(unsigned short int port, unsigned char val);
 
 char *framebuffer = (char *) 0x000B8000;
-unsigned int cursor = 4;
+unsigned int cursor = 0;
 
 /**
  * write a character to the screen (framebuffer)
@@ -35,5 +35,30 @@ void fb_scroll() {
   // clear the last row
   for (int i = 3840; i < 4000; i += 2) {
     fb_write_cell(i, ' ', 0, 0);
+  }
+}
+
+void putchar(char c) {
+  switch (c) {
+    case '\r':
+      cursor -= (cursor % 160);
+      break;
+    case '\n':
+      cursor += 160;
+      break;
+    default:
+      fb_write_cell(cursor, c, 0, 15);
+      cursor += 2;
+  }
+  if (cursor >= 4000) {
+    cursor -= 160;
+    fb_scroll();
+  }
+}
+
+void print(const char* str) {
+  char c;
+  while ((c = *str++) != 0) {
+    putchar(c);
   }
 }
