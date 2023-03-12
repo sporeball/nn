@@ -2,6 +2,8 @@
 #include "io.h"
 #include "keyboard.h"
 
+extern void loader();
+
 int main() {
   // empty the entire framebuffer
   for (int i = 0; i < 4000; i += 2) {
@@ -9,6 +11,7 @@ int main() {
   }
   // hi!
   print("nn\r\n");
+  printn((unsigned long) main);
 
   // initialization
   init_int_kb();

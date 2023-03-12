@@ -62,3 +62,16 @@ void print(const char* str) {
     putchar(c);
   }
 }
+
+void printn(unsigned long n) {
+  char buffer[16];
+  int position = 0;
+  while (n > 0) {
+    buffer[position] = (char) ((n % 10) + 48);
+    position++;
+    n /= 10;
+  }
+  while (--position >= 0) {
+    putchar(buffer[position]);
+  }
+}

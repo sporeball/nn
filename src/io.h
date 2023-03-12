@@ -8,6 +8,7 @@ void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg);
 void fb_scroll();
 void putchar(char c);
 void print(const char* str);
+void printn(unsigned long n);
 
 // todo: figure out how to move these to the asm side
 inline unsigned char inb(unsigned short port) {
