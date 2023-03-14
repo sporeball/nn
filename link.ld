@@ -5,6 +5,7 @@ SECTIONS {
 
   .text ALIGN (0x1000) : /* 4KB */
   {
+    *(.multiboot)
     *(.text)             /* all text sections from all files */
   }
 
@@ -13,10 +14,10 @@ SECTIONS {
     *(.rodata*)
   }
 
-  .data ALIGN (0x1000) :
-  {
-    *(.data)
-  }
+  /* .data ALIGN (0x1000) : */
+  /* { */
+  /*   *(.data) */
+  /* } */
 
   .bss ALIGN (0x1000) :
   {

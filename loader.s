@@ -6,10 +6,17 @@ CHECKSUM     equ -MAGIC_NUMBER ; magic number + flags + checksum = 0
 
 KERNEL_STACK_SIZE equ 4096
 
+section .multiboot
+align 4
+  dd MAGIC_NUMBER
+  dd FLAGS
+  dd CHECKSUM
+
 section .bss
 align 4
-kernel_stack:
+stack_bottom:
   resb KERNEL_STACK_SIZE ; reserve
+stack_top:
 
 section .data
 align 4
@@ -49,13 +56,9 @@ global kb_handle_asm
 extern main
 extern kb_handle
 
-  dd MAGIC_NUMBER
-  dd FLAGS
-  dd CHECKSUM
-
 loader:
   cli
-  mov esp, kernel_stack + KERNEL_STACK_SIZE ; point esp to start of stack
+  mov esp, stack_top
   lgdt [gdt_desc]                           ; load GDT into gdtr
   mov ax, 0x10                              ; extra post-GDT black magic...
   mov ds, ax
@@ -66,6 +69,7 @@ loader:
   jmp 0x08:continue                         ; move on
 
 continue:
+  push ebx
   call main
   hlt
 
