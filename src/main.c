@@ -7,7 +7,7 @@
 extern void loader();
 
 void peek(int addr) {
-  printn((unsigned long) *(unsigned char*)addr);
+  printn(*(unsigned char*)addr);
   print("\r\n");
 }
 
@@ -23,6 +23,12 @@ int main(multiboot_info_t *mb) {
   init_int_kb();
   init_pic();
   load_idt();
+  init_memory(mb);
+  // memory message
+  printn(bytes_free);
+  print(" bytes free (regions: ");
+  printn(num_safe_memory_areas);
+  print(")\r\n");
 
   // enable IRQ1 (keyboard)
   outb(0x21, 0xFD);
@@ -30,11 +36,15 @@ int main(multiboot_info_t *mb) {
   init_keymap();
   init_shiftKeymap();
 
-  init_memory(mb);
-  printn(bytes_free);
-  print(" bytes free\r\n");
-  /* for (int i = 0; i < num_safe_memory_areas; i++) { */
-  /* } */
+  // memory stuff
+  /* printn((unsigned long) m); // address of m */
+  /* printn((unsigned long) *m); // first byte of m */
+  /* char *my_string = malloc(16); */
+  /* int *my_ints = malloc(sizeof(int) * 16); */
+  /* printn((unsigned long) my_string); */
+  /* print("\r\n"); */
+  /* printn((unsigned long) my_ints); */
+  /* print("\r\n"); */
 
   while (1);
 }

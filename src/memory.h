@@ -14,6 +14,7 @@ extern int bytes_free;
 
 void init_memory(multiboot_info_t *mb);
 
+void* malloc(int len);
 /* extern unsigned int my_memory_available; */
 
 #endif

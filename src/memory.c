@@ -6,7 +6,8 @@ struct memory_area safe_memory_areas[8];
 int num_safe_memory_areas = 0;
 int bytes_free = 0;
 
-/* unsigned int my_memory_available = 0; */
+struct memory_area allocation_table[256];
+int num_areas_allocated = 0;
 
 void init_memory(multiboot_info_t *mb) {
   // for each region in the multiboot memory map
@@ -48,3 +49,22 @@ void init_memory(multiboot_info_t *mb) {
     num_safe_memory_areas++;
   }
 }
+
+void* malloc(int len) {
+  unsigned long addr;
+  // if no blocks have been allocated yet
+  if (num_areas_allocated == 0) {
+    // memory should be allocated at the start of the first safe memory area
+    addr = safe_memory_areas[0].addr;
+  } else {
+    // memory should be allocated after the end of the last allocated block
+    addr = allocation_table[num_areas_allocated - 1].addr + allocation_table[num_areas_allocated - 1].len;
+  }
+  allocation_table[num_areas_allocated].addr = addr;
+  allocation_table[num_areas_allocated].len = len;
+  num_areas_allocated++;
+  return (void*) addr;
+}
+
+/* void free(void *ptr) { */
+/* } */
