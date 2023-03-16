@@ -66,5 +66,22 @@ void* malloc(int len) {
   return (void*) addr;
 }
 
-/* void free(void *ptr) { */
-/* } */
+void free(void *ptr) {
+  unsigned long addr = (unsigned long) ptr;
+  int entry_index = -1;
+  // find the index of the area we want to free
+  for (int i = 0; i < num_areas_allocated; i++) {
+    if (allocation_table[i].addr == addr) {
+      entry_index = i;
+    }
+  }
+  if (entry_index == -1) {
+    // todo: panic
+    return;
+  }
+  // any areas after it should be moved down
+  for (int i = entry_index + 1; i <= num_areas_allocated; i++) {
+    allocation_table[i - 1] = allocation_table[i];
+  }
+  num_areas_allocated--;
+}

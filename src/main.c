@@ -45,6 +45,9 @@ int main(multiboot_info_t *mb) {
   /* print("\r\n"); */
   /* printn((unsigned long) my_ints); */
   /* print("\r\n"); */
+  /* free(my_string); */
+  /* char *my_string2 = malloc(16); */
+  /* printn((unsigned long) my_string2); */
 
   while (1);
 }
