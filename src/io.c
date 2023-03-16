@@ -66,6 +66,10 @@ void print(const char* str) {
 void printn(unsigned long n) {
   char buffer[16];
   int position = 0;
+  if (n == 0) {
+    putchar('0');
+    return;
+  }
   while (n > 0) {
     buffer[position] = (char) ((n % 10) + 48);
     position++;
