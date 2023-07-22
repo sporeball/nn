@@ -3,6 +3,7 @@
 #include "keyboard.h"
 #include "memory.h"
 #include "multiboot.h"
+#include "vga.h"
 
 extern void loader();
 
@@ -35,6 +36,25 @@ int main(multiboot_info_t *mb) {
 
   init_keymap();
   init_shiftKeymap();
+
+  write_regs(g_640x480x16);
+
+  for (int i = 0; i < 640; i++) {
+    for (int j = 0; j < 480; j++) {
+      write_pixel4p(i, j, 0);
+    }
+  }
+
+  write_pixel4p(0, 0, 10);
+  write_pixel4p(639, 0, 10);
+  write_pixel4p(0, 479, 10);
+  write_pixel4p(639, 479, 10);
+
+  // memory stuff
+  /* printn((unsigned long) m); // address of m */
+  /* printn((unsigned long) *m); // first byte of m */
+  /* char *my_string = malloc(16); */
+  /* int *my_ints = malloc(sizeof(int) * 16); */
 
   // memory stuff
   /* printn((unsigned long) m); // address of m */
