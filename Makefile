@@ -19,7 +19,7 @@ BCHSFLAGS = -q
 
 # step 1: assemble all .c files into .o files
 %.o: %.c
-~ gcc $(CFLAGS) $< -o $@
+~ i686-elf-gcc $(CFLAGS) $< -o $@
 
 # step 2: assemble all .s files into .o files
 %.o: %.s
@@ -27,7 +27,7 @@ BCHSFLAGS = -q
 
 # step 3: combine all .o files into a single .elf file
 kernel.bin: $(OBJECTS)
-~ ld $(LDFLAGS) $(OBJECTS) -o kernel.bin
+~ i686-elf-ld $(LDFLAGS) $(OBJECTS) -o kernel.bin
 
 # step 4: create an ISO
 nn.iso: kernel.bin
