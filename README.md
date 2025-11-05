@@ -11,8 +11,3 @@ if all goes well, an `nn.iso` file should be produced.
 to run **nn** in [qemu](https://www.qemu.org), run `make run`. this requires qemu's `i386` architecture.
 
 to run **nn** in [Bochs](https://bochs.sourceforge.io) instead for its useful debugging functionality, run `make debug`.
-
-### donate
-you can support the development of this project and others via Patreon:
-
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsporeball%26type%3Dpledges%26suffix%3D%252Fmonth&style=for-the-badge)](https://patreon.com/sporeball)
